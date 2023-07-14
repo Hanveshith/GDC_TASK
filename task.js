@@ -15,10 +15,21 @@ const AvailableTasks = () =>{
     });
 } 
 
+const CompletedTasks = () => {
+    const data = fs.readFileSync(CompletedFile,"utf8");
+    const lines = data.split('\n').filter((line) => line.trim() !== '');
+    return lines;
+}
+
+const WriteCompletedtasks = (task) => {
+    const data = task.join('\n');
+    fs.writeFileSync(CompletedFile,data,"utf8");
+}
+
 const WriteTasks = (tasks) => {
   const lines = tasks.map((task) => `${task.priority} ${task.task}`);
   const data = lines.join('\n');
-  fs.writeFileSync(TaskFile,data,"utf-8");
+  fs.writeFileSync(TaskFile,data,"utf8");
 }
 
 
@@ -35,3 +46,17 @@ const DeleteTask = (index) => {
     WriteTasks(updatedTasks);
     console.log(`Deleted task #${index}`);
 }
+
+const CompleteTask = (index) => {
+    const tasks = AvailableTasks();
+    const completedtasks = CompletedTasks();
+    // const completedtask = tasks[index-1];
+    const updatedTasks = tasks.filter((task, i) => i !== index - 1);
+    completedtasks.push(updatedTasks.task);
+    WriteTasks(updatedTasks);
+    WriteCompletedtasks(completedtasks);
+    console.log('Marked item as done.');
+}
+
+
+CompleteTask(1);
