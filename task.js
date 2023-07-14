@@ -65,3 +65,31 @@ const Listtasks = () => {
         console.log(`${index + 1}. ${task.task} [${task.priority}]`);
       });
 }
+
+
+const args = process.argv.slice(2);
+const command = args[0];
+
+if (command === 'add') {
+  const priority = parseInt(args[1]);
+  const task = args.slice(2).join(' ');
+  AddTask(priority, task);
+} else if (command === 'ls') {
+  Listtasks();
+} else if (command === 'del') {
+  const index = parseInt(args[1]);
+  DeleteTask(index);
+} else if (command === 'done') {
+  const index = parseInt(args[1]);
+  CompleteTask(index);
+} else if (command === 'report') {
+  generateReport();
+} else {
+  console.log(`Usage :-
+$ ./task add 2 hello world    # Add a new item with priority 2 and text "hello world" to the list
+$ ./task ls                   # Show incomplete priority list items sorted by priority in ascending order
+$ ./task del INDEX            # Delete the incomplete item with the given index
+$ ./task done INDEX           # Mark the incomplete item with the given index as complete
+$ ./task help                 # Show usage
+$ ./task report               # Statistics`);
+}
