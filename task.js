@@ -15,6 +15,12 @@ const AvailableTasks = () =>{
     });
 } 
 
+const WriteTasks = (tasks) => {
+    const lines = tasks.map((task) => `${task.priority} ${task.task}`);
+    const data = lines.join('\n');
+    fs.writeFileSync(TaskFile,data,"utf8");
+  }
+  
 const CompletedTasks = () => {
     const data = fs.readFileSync(CompletedFile,"utf8");
     const lines = data.split('\n').filter((line) => line.trim() !== '');
@@ -24,12 +30,6 @@ const CompletedTasks = () => {
 const WriteCompletedtasks = (task) => {
     const data = task.join('\n');
     fs.writeFileSync(CompletedFile,data,"utf8");
-}
-
-const WriteTasks = (tasks) => {
-  const lines = tasks.map((task) => `${task.priority} ${task.task}`);
-  const data = lines.join('\n');
-  fs.writeFileSync(TaskFile,data,"utf8");
 }
 
 
@@ -58,5 +58,10 @@ const CompleteTask = (index) => {
     console.log('Marked item as done.');
 }
 
-
-CompleteTask(1);
+const Listtasks = () => {
+    const tasks = AvailableTasks();
+    const sortedTasks = tasks.sort((a,b) => a.priority - b.priority);
+    sortedTasks.forEach((task, index) => {
+        console.log(`${index + 1}. ${task.task} [${task.priority}]`);
+      });
+}
