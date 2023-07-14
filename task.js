@@ -28,3 +28,10 @@ const AddTask = (priority,task) => {
     WriteTasks(tasks);
     console.log(`Added task: "${task}" with priority ${priority}`);
 } 
+
+const DeleteTask = (index) => {
+    const tasks = AvailableTasks();
+    const updatedTasks = tasks.filter((_, i) => i !== index - 1);
+    WriteTasks(updatedTasks);
+    console.log(`Deleted task #${index}`);
+}
