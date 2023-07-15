@@ -37,7 +37,11 @@ const AddTask = (priority,task) => {
   if (!fs.existsSync(TaskFile)) {
     fs.writeFileSync(TaskFile, '', 'utf8');
   }
+  
+  if (!task || task.trim() === "") {
+    console.log("Error: Missing tasks string. Nothing added!");
 
+  }
     const tasks = AvailableTasks();
     tasks.push({ priority, task });
     WriteTasks(tasks);
