@@ -34,6 +34,10 @@ const WriteCompletedtasks = (task) => {
 
 
 const AddTask = (priority,task) => {
+  if (!fs.existsSync(TaskFile)) {
+    fs.writeFileSync(TaskFile, '', 'utf8');
+  }
+
     const tasks = AvailableTasks();
     tasks.push({ priority, task });
     WriteTasks(tasks);
