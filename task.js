@@ -2,77 +2,84 @@ const fs = require('fs');
 const TaskFile = "task.txt";
 const CompletedFile = "completed.txt";
 
-const AvailableTasks = () =>{
-    const data = fs.readFileSync(TaskFile,"utf8");
-    const lines = data.split('\n').filter((line) => line.trim() !== '');
+const AvailableTasks = () => {
+  const data = fs.readFileSync(TaskFile, "utf8");
+  const lines = data.split('\n').filter((line) => line.trim() !== '');
 
-    return lines.map((line) => {
-        const [priority,...task] = line.split(' ');
-        return {
-            priority: parseInt(priority),
-            task: task.join(' '),
-        };
-    });
-} 
+  return lines.map((line) => {
+    const [priority, ...task] = line.split(' ');
+    return {
+      priority: parseInt(priority),
+      task: task.join(' '),
+    };
+  });
+}
 
 const WriteTasks = (tasks) => {
-    const lines = tasks.map((task) => `${task.priority} ${task.task}`);
-    const data = lines.join('\n');
-    fs.writeFileSync(TaskFile,data,"utf8");
-  }
-  
+  const lines = tasks.map((task) => `${task.priority} ${task.task}`);
+  const data = lines.join('\n');
+  fs.writeFileSync(TaskFile, data, "utf8");
+}
+
 const CompletedTasks = () => {
-    const data = fs.readFileSync(CompletedFile,"utf8");
-    const lines = data.split('\n').filter((line) => line.trim() !== '');
-    return lines;
+  const data = fs.readFileSync(CompletedFile, "utf8");
+  const lines = data.split('\n').filter((line) => line.trim() !== '');
+  return lines;
 }
 
 const WriteCompletedtasks = (task) => {
-    const data = task.join('\n');
-    fs.writeFileSync(CompletedFile,data,"utf8");
+  const data = task.join('\n');
+  fs.writeFileSync(CompletedFile, data, "utf8");
 }
 
 
-const AddTask = (priority,task) => {
+const AddTask = (priority, task) => {
   if (!fs.existsSync(TaskFile)) {
     fs.writeFileSync(TaskFile, '', 'utf8');
   }
   //for task is empty
-  
+
   if (!task || task.trim() === "") {
     console.log("Error: Missing tasks string. Nothing added!");
 
   }
-    const tasks = AvailableTasks();
-    tasks.push({ priority, task });
-    WriteTasks(tasks);
-    console.log(`Added task: "${task}" with priority ${priority}`);
-} 
+  const tasks = AvailableTasks();
+  tasks.push({ priority, task });
+  WriteTasks(tasks);
+  console.log(`Added task: "${task}" with priority ${priority}`);
+}
 
 const DeleteTask = (index) => {
-    const tasks = AvailableTasks();
-    const updatedTasks = tasks.filter((_, i) => i !== index - 1);
-    WriteTasks(updatedTasks);
-    console.log(`Deleted task #${index}`);
+  const tasks = AvailableTasks();
+  const updatedTasks = tasks.filter((_, i) => i !== index - 1);
+  WriteTasks(updatedTasks);
+  console.log(`Deleted task #${index}`);
 }
 
 const CompleteTask = (index) => {
-    const tasks = AvailableTasks();
-    const completedtasks = CompletedTasks();
-    // const completedtask = tasks[index-1];
-    const updatedTasks = tasks.filter((task, i) => i !== index - 1);
-    completedtasks.push(updatedTasks.task);
-    WriteTasks(updatedTasks);
-    WriteCompletedtasks(completedtasks);
-    console.log('Marked item as done.');
+  const tasks = AvailableTasks();
+  const completedtasks = CompletedTasks();
+  // const completedtask = tasks[index-1];
+  const updatedTasks = tasks.filter((task, i) => i !== index - 1);
+  completedtasks.push(updatedTasks.task);
+  WriteTasks(updatedTasks);
+  WriteCompletedtasks(completedtasks);
+  console.log('Marked item as done.');
 }
 
 const Listtasks = () => {
-    const tasks = AvailableTasks();
-    const sortedTasks = tasks.sort((a,b) => a.priority - b.priority);
-    sortedTasks.forEach((task, index) => {
-        console.log(`${index + 1}. ${task.task} [${task.priority}]`);
-      });
+  if (!fs.existsSync(TaskFile)) {
+    fs.writeFileSync(TaskFile, '', 'utf8');
+  }
+  const tasks = AvailableTasks();
+  if (tasks.length === 0) {
+    console.log("There are no pending tasks!");
+    return;
+  }
+  const sortedTasks = tasks.sort((a, b) => a.priority - b.priority);
+  sortedTasks.forEach((task, index) => {
+    console.log(`${index + 1}. ${task.task} [${task.priority}]`);
+  });
 }
 
 
