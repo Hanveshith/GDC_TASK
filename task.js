@@ -76,6 +76,10 @@ const CompleteTask = (index) => {
   const tasks = AvailableTasks();
   const completedtasks = CompletedTasks();
   // const completedtask = tasks[index-1];
+  if (index < 1 || index > tasks.length) {
+    console.log(`Error: no incomplete item with index #0 exists.`);
+    return;
+  }
   const updatedTasks = tasks.filter((task, i) => i !== index - 1);
   completedtasks.push(updatedTasks.task);
   WriteTasks(updatedTasks);
