@@ -106,7 +106,7 @@ const Listtasks = () => {
   });
 }
 
-const generateReport = () => {
+const report = () => {
   const tasks = AvailableTasks();
   const completedTasks = CompletedTasks();
 
@@ -136,7 +136,7 @@ if (command === 'add') {
   const index = parseInt(args[1]);
   CompleteTask(index);
 } else if (command === 'report') {
-  generateReport();
+  report();
 } else {
   console.log(`Usage :-
 $ ./task add 2 hello world    # Add a new item with priority 2 and text "hello world" to the list
