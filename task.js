@@ -70,6 +70,9 @@ const DeleteTask = (index) => {
 }
 
 const CompleteTask = (index) => {
+  if (!fs.existsSync(CompletedFile)) {
+    fs.writeFileSync(CompletedFile, '', 'utf8');
+  }
   const tasks = AvailableTasks();
   const completedtasks = CompletedTasks();
   // const completedtask = tasks[index-1];
