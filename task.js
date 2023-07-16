@@ -53,11 +53,17 @@ const DeleteTask = (index) => {
   if (!fs.existsSync(TaskFile)) {
     fs.writeFileSync(TaskFile, '', 'utf8');
   }
+ 
+  
+  const tasks = AvailableTasks();
+  if (index < 1 || index > tasks.length) {
+    console.log(`Error: task with index #${index} does not exist. Nothing deleted.`);
+    return;
+  }
   if(!index){
     console.log("Error: Missing NUMBER for deleting tasks.");
     return
   }
-  const tasks = AvailableTasks();
   const updatedTasks = tasks.filter((_, i) => i !== index - 1);
   WriteTasks(updatedTasks);
   console.log(`Deleted task #${index}`);
