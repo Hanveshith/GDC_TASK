@@ -50,6 +50,13 @@ const AddTask = (priority, task) => {
 }
 
 const DeleteTask = (index) => {
+  if (!fs.existsSync(TaskFile)) {
+    fs.writeFileSync(TaskFile, '', 'utf8');
+  }
+  if(!index){
+    console.log("Error: Missing NUMBER for deleting tasks.");
+    return
+  }
   const tasks = AvailableTasks();
   const updatedTasks = tasks.filter((_, i) => i !== index - 1);
   WriteTasks(updatedTasks);
