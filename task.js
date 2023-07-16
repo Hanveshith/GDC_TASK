@@ -75,13 +75,17 @@ const CompleteTask = (index) => {
   }
   const tasks = AvailableTasks();
   const completedtasks = CompletedTasks();
-  // const completedtask = tasks[index-1];
+  const completedtask = tasks[index-1];
   if (index < 1 || index > tasks.length) {
     console.log(`Error: no incomplete item with index #0 exists.`);
     return;
   }
+  if(!index){
+    console.log("Error: Missing NUMBER for marking tasks as done.");
+    return;
+  }
   const updatedTasks = tasks.filter((task, i) => i !== index - 1);
-  completedtasks.push(updatedTasks.task);
+  completedtasks.push(completedtask.task);
   WriteTasks(updatedTasks);
   WriteCompletedtasks(completedtasks);
   console.log('Marked item as done.');
@@ -102,7 +106,20 @@ const Listtasks = () => {
   });
 }
 
+const generateReport = () => {
+  const tasks = AvailableTasks();
+  const completedTasks = CompletedTasks();
 
+  console.log(`Pending : ${tasks.length}`);
+  tasks.forEach((task, index) => {
+    console.log(`${index + 1}. ${task.task} [${task.priority}]\n`);
+  });
+
+  console.log(`Completed : ${completedTasks.length}`);
+  completedTasks.forEach((task, index) => {
+    console.log(`${index + 1}. ${task}`);
+  });
+}
 const args = process.argv.slice(2);
 const command = args[0];
 
